@@ -1,2 +1,5 @@
 # Pipeline-Project
 Repository for COMP483 Pipeline Project
+
+Required Dependences:
+os
