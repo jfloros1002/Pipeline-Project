@@ -23,5 +23,5 @@ os.chdir("/home/2025/jfloros/Comp_Bio/Pipeline-Project/PipelineProject_John_Flor
 print(genomic_CDS_num)
 with open("PipelineProject.log","a+") as f:
 	f.write("The HCMV genome (NC_006273.2) has " +str( genomic_CDS_num) + " CDS.")
-reference_transcriptome = "kallisto index -1 index.idx cds.fna"
+reference_transcriptome = "kallisto index -i index.idx cds.fna"
 os.system(reference_transcriptome)
