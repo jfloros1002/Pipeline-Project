@@ -4,6 +4,7 @@ import subprocess
 #Create a directory for output of all files
 os.system("mkdir PipelineProject_John_Floros")
 os.system("cp *.fastq PipelineProject_John_Floros") 
+os.system("cp sleuth_command.R PipelineProject_John_Floros")
 os.chdir("PipelineProject_John_Floros")
 
 #Create an file for the output of each command in the pipeline
@@ -117,3 +118,5 @@ with open("sleuth_input.tsv","a+") as f:
 	f.write("SRR5660033\t1\t6dpi\tquantification_results_one_6dpi\n")
 	f.write("SRR5660044\t3\t2dpi\tquantification_results_three_2dpi\n")
 	f.write("SRR5660045\t3\t6dpi\tquantification_results_three_6dpi\n")
+
+os.system('Rscript sleuth_command.R')
