@@ -118,6 +118,7 @@ with open("PipelineProject.log", "a+") as f:
     f.write("sample\tcondition\tmin_tpm\tmed_tpm\tmean_tpm\tmax_tpm\n")
     f.write("Donor 3\t" + "6dpi\t" + str(minimum) + "\t" + str(median) + "\t" + str(mean) + "\t" + str(maximum) + "\n")
 
+#Creating tsv file for reading for sleuth input
 with open("sleuth_input.tsv","a+") as f:
 	f.write("sample\tdonor\tcondition\tpath\n")
 	f.write("SRR5660030\t1\t2dpi\tquantification_results_one_2dpi\n")
@@ -125,8 +126,10 @@ with open("sleuth_input.tsv","a+") as f:
 	f.write("SRR5660044\t3\t2dpi\tquantification_results_three_2dpi\n")
 	f.write("SRR5660045\t3\t6dpi\tquantification_results_three_6dpi\n")
 
+#Run Rscript command, output will be a tsv file with significant values
 os.system('Rscript sleuth_command.R')
 
+#Extract data from Rscript output
 with open("significant_values.tsv" "r"):
 	lines = f.readlines()[1:]
 	target_id = [i.split("\t")[1] for i in lines]
@@ -137,7 +140,9 @@ with open("significant_values.tsv" "r"):
 	qval_raw = [i.split("\t")[4] for i in lines]
 	qval = [float(x.strip()) for x in qval_raw]
 
+#Write output to log file
 with open("PipelineProject.log", "a+") as f:
     f.write("target_id\ttest_stat\tpval\tqval\n")
     for i in range(len(target_id)):
    	 f.write(target_id[i] + "\t" + test_stat[i] + "\t" + pval[i] + "\t" + qval[i] + "\n")
+
