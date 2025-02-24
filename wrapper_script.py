@@ -25,7 +25,8 @@ with open("PipelineProject.log","a+") as f:
 reference_transcriptome = "kallisto index -i index.idx cds.fna"
 os.system(reference_transcriptome)
 
-quantification_one_2dpi = "kallisto quant -i index.idx -o quantification_results_one_2dpi -b 10 -t 2 SRR5660033_1.fastq SRR5660033_2.fastq"
+#First quantification
+quantification_one_2dpi = "kallisto quant -i index.idx -o quantification_results_one_2dpi -b 10 -t 2 SRR5660030_1.fastq SRR5660030_2.fastq"
 os.system(quantification_one_2dpi)
 os.chdir("quantification_results_one_2dpi")
 with open("abundance.tsv","r")as f:
@@ -42,15 +43,70 @@ def find_median(results):
     else:
         median = results[list_length // 2]
     return median
-min_1_2dpi = min(results)
-med_1_2dpi = find_median(results) 
+minimum = min(results)
+median = find_median(results) 
 sum_results = sum(results)
 length_results = len(results)
-print(sum_results)
-print(length_results)
-mean_1_2dpi = sum_results/length_results
-max_1_2dpi = max(results)
+mean = sum_results/length_results
+maximum = max(results)
 os.chdir("..")
 with open("PipelineProject.log", "a+") as f:
     f.write("sample\tcondition\tmin_tpm\tmed_tpm\tmean_tpm\tmax_tpm\n")
-    f.write("Donor 1\t" + "2dpi\t" + str(min_1_2dpi) + "\t" + str(med_1_2dpi) + "\t" + str(mean_1_2dpi) + "\t" + str(max_1_2dpi) + "\n")
+    f.write("Donor 1\t" + "2dpi\t" + str(minimum) + "\t" + str(median) + "\t" + str(mean) + "\t" + str(maximum) + "\n")
+
+#Second Quantification
+quantification_one_6dpi = "kallisto quant -i index.idx -o quantification_results_one_6dpi -b 10 -t 2 SRR5660033_1.fastq SRR5660033_2.fastq"
+os.system(quantification_one_6dpi)
+os.chdir("quantification_results_one_6dpi")
+with open("abundance.tsv","r")as f:
+        lines = f.readlines()[1:]
+        base_results = [(i.split("\t")[4]) for i in lines]
+        results = [float(x.strip()) for x in base_results]
+minimum = min(results)
+median = find_median(results) 
+sum_results = sum(results)
+length_results = len(results)
+mean = sum_results/length_results
+maximum = max(results)
+os.chdir("..")
+with open("PipelineProject.log", "a+") as f:
+    f.write("sample\tcondition\tmin_tpm\tmed_tpm\tmean_tpm\tmax_tpm\n")
+    f.write("Donor 1\t" + "6dpi\t" + str(minimum) + "\t" + str(median) + "\t" + str(mean) + "\t" + str(maximum) + "\n")
+
+#Third Quantification
+quantification_three_2dpi = "kallisto quant -i index.idx -o quantification_results_three_2dpi -b 10 -t 2 SRR5660044_1.fastq SRR5660044_2.fastq"
+os.system(quantification_three_2dpi)
+os.chdir("quantification_results_three_2dpi")
+with open("abundance.tsv","r")as f:
+        lines = f.readlines()[1:]
+        base_results = [(i.split("\t")[4]) for i in lines]
+        results = [float(x.strip()) for x in base_results]
+minimum = min(results)
+median = find_median(results) 
+sum_results = sum(results)
+length_results = len(results)
+mean = sum_results/length_results
+maximum = max(results)
+os.chdir("..")
+with open("PipelineProject.log", "a+") as f:
+    f.write("sample\tcondition\tmin_tpm\tmed_tpm\tmean_tpm\tmax_tpm\n")
+    f.write("Donor 3\t" + "2dpi\t" + str(minimum) + "\t" + str(median) + "\t" + str(mean) + "\t" + str(maximum) + "\n")
+
+#Fourth Quantification
+quantification_three_6dpi = "kallisto quant -i index.idx -o quantification_results_three_6dpi -b 10 -t 2 SRR5660045_1.fastq SRR5660045_2.fastq"
+os.system(quantification_three_6dpi)
+os.chdir("quantification_results_three_6dpi")
+with open("abundance.tsv","r")as f:
+        lines = f.readlines()[1:]
+        base_results = [(i.split("\t")[4]) for i in lines]
+        results = [float(x.strip()) for x in base_results]
+minimum = min(results)
+median = find_median(results) 
+sum_results = sum(results)
+length_results = len(results)
+mean = sum_results/length_results
+maximum = max(results)
+os.chdir("..")
+with open("PipelineProject.log", "a+") as f:
+    f.write("sample\tcondition\tmin_tpm\tmed_tpm\tmean_tpm\tmax_tpm\n")
+    f.write("Donor 3\t" + "6dpi\t" + str(minimum) + "\t" + str(median) + "\t" + str(mean) + "\t" + str(maximum) + "\n")
