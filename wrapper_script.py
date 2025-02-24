@@ -11,7 +11,8 @@ os.chdir("PipelineProject_John_Floros")
 os.system("echo > PipelineProject.log")
 
 #Create  a genome for HCMV using NCBI command datasets
-HCMV_cds = os.system("datasets download virus genome accession NC_006273.2 --include cds")
+#HCMV_cds = os.system("datasets download virus genome accession NC_006273.2 --include cds")
+HCMV_cds = os.system("datasets download genome accession GCF_000845245.1 --include gff3,rna,cds,protein,genome,seq-report")
 #Unzip the file and go inside to analyze
 os.system("unzip ncbi_dataset.zip")
 os.system("cp ncbi_dataset/data/cds.fna .")
@@ -130,11 +131,11 @@ with open("sleuth_input.tsv","a+") as f:
 os.system('Rscript sleuth_command.R')
 
 #Extract data from Rscript output
-with open("significant_values.tsv" "r"):
+with open("significant_values.tsv", "r") as f:
 	lines = f.readlines()[1:]
 	target_id = [i.split("\t")[1] for i in lines]
-        test_stat_raw = [(i.split("\t")[2]) for i in lines]
-        test_stat = [float(x.strip()) for x in test_stat_raw]
+	test_stat_raw = [(i.split("\t")[2]) for i in lines]
+	test_stat = [float(x.strip()) for x in test_stat_raw]
 	pval_raw = [i.split("\t")[3] for i in lines]
 	pval = [float(x.strip()) for x in pval_raw]
 	qval_raw = [i.split("\t")[4] for i in lines]
