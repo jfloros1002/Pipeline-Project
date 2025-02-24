@@ -27,13 +27,17 @@ reference_transcriptome = "kallisto index -i index.idx cds.fna"
 os.system(reference_transcriptome)
 
 #First quantification
+#Kallisto quantification is used for analysis. The previously assembled index is used as well as the paired FASTQ files that were previously downloaded
 quantification_one_2dpi = "kallisto quant -i index.idx -o quantification_results_one_2dpi -b 10 -t 2 SRR5660030_1.fastq SRR5660030_2.fastq"
+#The system then runs this command and changes to the output directory to read results from the abduncance tsv file
 os.system(quantification_one_2dpi)
 os.chdir("quantification_results_one_2dpi")
 with open("abundance.tsv","r")as f:
+#Lines are read and then each value is split into a list, newline characters are removed and stastitiscal analysis is done
 	lines = f.readlines()[1:]
 	base_results = [(i.split("\t")[4]) for i in lines]
 	results = [float(x.strip()) for x in base_results]
+#Function to calculate median result of list
 def find_median(results):
     results.sort()
     list_length = len(results)
@@ -44,12 +48,14 @@ def find_median(results):
     else:
         median = results[list_length // 2]
     return median
+#Finding the minimum, median, mean, and maximum values of the TPMs
 minimum = min(results)
 median = find_median(results) 
 sum_results = sum(results)
 length_results = len(results)
 mean = sum_results/length_results
 maximum = max(results)
+#Return to main directory and write to the output file
 os.chdir("..")
 with open("PipelineProject.log", "a+") as f:
     f.write("sample\tcondition\tmin_tpm\tmed_tpm\tmean_tpm\tmax_tpm\n")
