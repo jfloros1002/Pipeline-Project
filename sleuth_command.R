@@ -1,5 +1,5 @@
 #Load libraries
-library(dplyr
+library(dplyr)
 library(sleuth)
 #Read in table from four reads, ignoring header
 stab <- read.table('sleuth_input.tsv', header = TRUE)

@@ -22,6 +22,7 @@ genomic_CDS_num = genomic_CDS_num_command.stdout.strip()
 #Write first output of .log file
 with open("PipelineProject.log","a+") as f:
 	f.write("The HCMV genome (NC_006273.2) has " +str( genomic_CDS_num) + " CDS.\n")
+	f.write("\n")
 
 #Building index from HCMV
 reference_transcriptome = "kallisto index -i index.idx cds.fna"
@@ -78,7 +79,6 @@ mean = sum_results/length_results
 maximum = max(results)
 os.chdir("..")
 with open("PipelineProject.log", "a+") as f:
-    f.write("sample\tcondition\tmin_tpm\tmed_tpm\tmean_tpm\tmax_tpm\n")
     f.write("Donor 1\t" + "6dpi\t" + str(minimum) + "\t" + str(median) + "\t" + str(mean) + "\t" + str(maximum) + "\n")
 
 #Third Quantification
@@ -97,7 +97,6 @@ mean = sum_results/length_results
 maximum = max(results)
 os.chdir("..")
 with open("PipelineProject.log", "a+") as f:
-    f.write("sample\tcondition\tmin_tpm\tmed_tpm\tmean_tpm\tmax_tpm\n")
     f.write("Donor 3\t" + "2dpi\t" + str(minimum) + "\t" + str(median) + "\t" + str(mean) + "\t" + str(maximum) + "\n")
 
 #Fourth Quantification
@@ -116,8 +115,8 @@ mean = sum_results/length_results
 maximum = max(results)
 os.chdir("..")
 with open("PipelineProject.log", "a+") as f:
-    f.write("sample\tcondition\tmin_tpm\tmed_tpm\tmean_tpm\tmax_tpm\n")
-    f.write("Donor 3\t" + "6dpi\t" + str(minimum) + "\t" + str(median) + "\t" + str(mean) + "\t" + str(maximum) + "\n")
+	 f.write("Donor 3\t" + "6dpi\t" + str(minimum) + "\t" + str(median) + "\t" + str(mean) + "\t" + str(maximum) + "\n")
+
 
 #Creating tsv file for reading for sleuth input
 with open("sleuth_input.tsv","a+") as f:
