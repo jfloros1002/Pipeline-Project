@@ -34,3 +34,7 @@ fasterq-dump SRR5660033
 fasterq-dump SRR5660044
 
 fasterq-dump SRR5660045
+
+These paired end flies are then used for the analysis using the wrapper_script.py command
+
+NOTE: It is important that the files names contain the SRR56600__.fastq file name, as this is used in the pipeline. Samples files will contain the same title suffix.
