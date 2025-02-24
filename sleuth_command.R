@@ -1,20 +1,27 @@
-#Load library
+#Load libraries
+library(dplyr
 library(sleuth)
+#Read in table from four reads, ignoring header
+stab <- read.table('sleuth_input.tsv', header = TRUE)
 
-sample.tab <- read.table('sleuth_input.tsv', header = TRUE) # read the metadata table already constructed #
+#Create object for sleuth, using full model
+so <- sleuth_prep(stab)
 
-sleuth.obj <- sleuth_prep(sample.tab) # prepare the data table for DGE analysis (defaults to the 'full' model) #
+#Fitting the data to different models, includes error and reduced fit
+so <- sleuth_fit(so, ~condition, 'condition.fit')
+so <- sleuth_fit(so, ~1, 'condition.re')
 
-sleuth.obj <- sleuth_fit(sleuth.obj, ~condition, 'condition.fit') # fit the data to the error model using the condition as the source of comparison #
+#Use likehood ratio test for differential analysis for gene expression
+so <- sleuth_lrt(so, 'condition.re', 'condition.fit')
 
-sleuth.obj <- sleuth_fit(sleuth.obj, ~1, 'condition.re') # fit the data to a reduced fit model for a source of comparison between the two conditions #
+#Find significant results
+sleuth_table <- sleuth_results(so, 'condition.re:condition.fit', 'lrt', show_all = FALSE)
 
-sleuth.obj <- sleuth_lrt(sleuth.obj, 'condition.re', 'condition.fit') # perform the likelihood ratio test to determine differential gene expression #
+#Filter to only results with qval less than 0.05, arrange p values in ascending order
+sleuth_significant <- dplyr::filter(sleuth_table, qval <= 0.05) |> dplyr::arrange(pval)
 
-library(dplyr) # make the dplyr package available to your current R session #
-sleuth.res <- sleuth_results(sleuth.obj, 'condition.re:condition.fit', 'lrt', show_all = FALSE) # extract the significant results before FDR of the model # 
+#Extract target_id, test_stat, pval, and qval for output
+sleuth_output <- dplyr::select(sleuth_significant, target_id, test_stat, pval, qval)
 
-sleuth.filt <- dplyr::filter(sleuth.res, qval <= 0.05) |> dplyr::arrange(pval) # filter out q-values after FDR that are less than 0.05 and order the remaining pvals in ascending order #
-sleuth.fin <- dplyr::select(sleuth.filt, target_id, test_stat, pval, qval) # take only the target_id, test_stat, pval, and qval columns of the data frame #
-
-write.table(sleuth.fin, 'hcmv_sigs.tsv', sep = '\t', row.names = FALSE) # write the data frame as a tsv file #
+#Wrties values to table for extraction to python pipeline log file using tab as a delimeter
+write.table(sleuth_output, 'significant_values.tsv', sep = '\t', row.names = FALSE)

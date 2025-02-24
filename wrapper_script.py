@@ -126,3 +126,18 @@ with open("sleuth_input.tsv","a+") as f:
 	f.write("SRR5660045\t3\t6dpi\tquantification_results_three_6dpi\n")
 
 os.system('Rscript sleuth_command.R')
+
+with open("significant_values.tsv" "r"):
+	lines = f.readlines()[1:]
+	target_id = [i.split("\t")[1] for i in lines]
+        test_stat_raw = [(i.split("\t")[2]) for i in lines]
+        test_stat = [float(x.strip()) for x in test_stat_raw]
+	pval_raw = [i.split("\t")[3] for i in lines]
+	pval = [float(x.strip()) for x in pval_raw]
+	qval_raw = [i.split("\t")[4] for i in lines]
+	qval = [float(x.strip()) for x in qval_raw]
+
+with open("PipelineProject.log", "a+") as f:
+    f.write("target_id\ttest_stat\tpval\tqval\n")
+    for i in range(len(target_id)):
+   	 f.write(target_id[i] + "\t" + test_stat[i] + "\t" + pval[i] + "\t" + qval[i] + "\n")
