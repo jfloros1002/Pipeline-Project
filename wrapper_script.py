@@ -25,3 +25,8 @@ with open("PipelineProject.log","a+") as f:
 	f.write("The HCMV genome (NC_006273.2) has " +str( genomic_CDS_num) + " CDS.")
 reference_transcriptome = "kallisto index -i index.idx cds.fna"
 os.system(reference_transcriptome)
+
+os.system("mkdir quantification_results")
+quantification_one_2dpi = "kallisto quant -i index.idx -o quantification_results_one_2dpi -b 10 -t 2 /home/2025/jfloros/Comp_Bio/Pipeline-Project/SRR5660033_1.fastq /home/2025/jfloros/Comp_Bio/Pipeline-Project/SRR5660033_2.fastq"
+
+os.system(quantification)
