@@ -110,3 +110,10 @@ os.chdir("..")
 with open("PipelineProject.log", "a+") as f:
     f.write("sample\tcondition\tmin_tpm\tmed_tpm\tmean_tpm\tmax_tpm\n")
     f.write("Donor 3\t" + "6dpi\t" + str(minimum) + "\t" + str(median) + "\t" + str(mean) + "\t" + str(maximum) + "\n")
+
+with open("sleuth_input.tsv","a+") as f:
+	f.write("sample\tdonor\tcondition\tpath\n")
+	f.write("SRR5660030\t1\t2dpi\tquantification_results_one_2dpi\n")
+	f.write("SRR5660033\t1\t6dpi\tquantification_results_one_6dpi\n")
+	f.write("SRR5660044\t3\t2dpi\tquantification_results_three_2dpi\n")
+	f.write("SRR5660045\t3\t6dpi\tquantification_results_three_6dpi\n")
