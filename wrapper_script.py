@@ -1,11 +1,11 @@
 #Import Necessary Dependencies
 import os
 import subprocess
-
 #Create a directory for output of all files
 os.system("mkdir PipelineProject_John_Floros")
 os.chdir("PipelineProject_John_Floros")
 
+quantification_one_2dpi = "kallisto quant -i index.idx -o quantification_results_one_2dpi -b 10 -t 2 /home/2025/jfloros/Comp_Bio/Pipeline-Project/SRR5660033_1.fastq /home/2025/jfloros/Comp_Bio/Pipeline-Project/SRR5660033_2.fastq"
 #Create an file for the output of each command in the pipeline
 os.system("echo > PipelineProject.log")
 
@@ -22,11 +22,39 @@ os.system("mv cds.fna ~/Comp_Bio/Pipeline-Project/PipelineProject_John_Floros")
 os.chdir("/home/2025/jfloros/Comp_Bio/Pipeline-Project/PipelineProject_John_Floros")
 print(genomic_CDS_num)
 with open("PipelineProject.log","a+") as f:
-	f.write("The HCMV genome (NC_006273.2) has " +str( genomic_CDS_num) + " CDS.")
+	f.write("The HCMV genome (NC_006273.2) has " +str( genomic_CDS_num) + " CDS.\n")
 reference_transcriptome = "kallisto index -i index.idx cds.fna"
 os.system(reference_transcriptome)
 
-os.system("mkdir quantification_results")
 quantification_one_2dpi = "kallisto quant -i index.idx -o quantification_results_one_2dpi -b 10 -t 2 /home/2025/jfloros/Comp_Bio/Pipeline-Project/SRR5660033_1.fastq /home/2025/jfloros/Comp_Bio/Pipeline-Project/SRR5660033_2.fastq"
-
-os.system(quantification)
+#REMOVE COMMENT
+os.system(quantification_one_2dpi)
+os.chdir("quantification_results_one_2dpi")
+with open("abundance.tsv","r")as f:
+	lines = f.readlines()[1:]
+	base_results = [(i.split("\t")[4]) for i in lines]
+	results = [float(x.strip()) for x in base_results]
+	print(results)
+#print(results)
+def find_median(results):
+    results.sort()
+    list_length = len(results)
+    if list_length % 2 == 0:
+        mid1 = results[list_length // 2 - 1]
+        mid2 = results[list_length // 2]
+        median = (mid1 + mid2) / 2
+    else:
+        median = results[list_length // 2]
+    return median
+min_1_2dpi = min(results)
+med_1_2dpi = find_median(results) 
+sum_results = sum(results)
+length_results = len(results)
+print(sum_results)
+print(length_results)
+mean_1_2dpi = sum_results/length_results
+max_1_2dpi = max(results)
+os.chdir("/home/2025/jfloros/Comp_Bio/Pipeline-Project/PipelineProject_John_Floros")
+with open("PipelineProject.log", "a+") as f:
+    f.write("sample\tcondition\tmin_tpm\tmed_tpm\tmean_tpm\tmax_tpm\n")
+    f.write("Donor 1\t" + "2dpi\t" + str(min_1_2dpi) + "\t" + str(med_1_2dpi) + "\t" + str(mean_1_2dpi) + "\t" + str(max_1_2dpi) + "\n")
