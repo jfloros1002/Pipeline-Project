@@ -15,9 +15,9 @@ os.system("echo > PipelineProject.log")
 HCMV_cds = os.system("datasets download genome accession GCF_000845245.1 --include gff3,rna,cds,protein,genome,seq-report")
 #Unzip the file and go inside to analyze
 os.system("unzip ncbi_dataset.zip")
-os.system("cp ncbi_dataset/data/cds.fna .")
-#Find total number of CDS for first output to .log file using subprocess module, output if captured in genomic_CDS_num
-genomic_CDS_num_command = subprocess.run("grep -c '>' cds.fna", shell=True, capture_output=True, text=True)
+os.system("cp ncbi_dataset/data/GCF_000845245.1/cds_from_genomic.fna .")
+#Find total number of CDS for first output to .log file using subprocess module, output is captured in genomic_CDS_num
+genomic_CDS_num_command = subprocess.run("grep -c '>' cds_from_genomic.fna", shell=True, capture_output=True, text=True)
 genomic_CDS_num = genomic_CDS_num_command.stdout.strip()
 #Write first output of .log file
 with open("PipelineProject.log","a+") as f:
@@ -25,7 +25,7 @@ with open("PipelineProject.log","a+") as f:
 	f.write("\n")
 
 #Building index from HCMV
-reference_transcriptome = "kallisto index -i index.idx cds.fna"
+reference_transcriptome = "kallisto index -i index.idx cds_from_genomic.fna"
 os.system(reference_transcriptome)
 
 #First quantification
