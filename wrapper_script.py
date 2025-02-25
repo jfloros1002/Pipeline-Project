@@ -30,7 +30,7 @@ os.system(reference_transcriptome)
 
 #First quantification
 #Kallisto quantification is used for analysis. The previously assembled index is used as well as the paired FASTQ files that were previously downloaded
-quantification_one_2dpi = "kallisto quant -i index.idx -o quantification_results_one_2dpi -b 10 -t 2 SRR5660030_1.fastq SRR5660030_2.fastq"
+quantification_one_2dpi = "kallisto quant -i index.idx -o quantification_results_one_2dpi -b 10 -t 2 *SRR5660030_1.fastq *SRR5660030_2.fastq"
 #The system then runs this command and changes to the output directory to read results from the abduncance tsv file
 os.system(quantification_one_2dpi)
 os.chdir("quantification_results_one_2dpi")
@@ -64,7 +64,7 @@ with open("PipelineProject.log", "a+") as f:
     f.write("Donor 1\t" + "2dpi\t" + str(minimum) + "\t" + str(median) + "\t" + str(mean) + "\t" + str(maximum) + "\n")
 
 #Second Quantification
-quantification_one_6dpi = "kallisto quant -i index.idx -o quantification_results_one_6dpi -b 10 -t 2 SRR5660033_1.fastq SRR5660033_2.fastq"
+quantification_one_6dpi = "kallisto quant -i index.idx -o quantification_results_one_6dpi -b 10 -t 2 *SRR5660033_1.fastq *SRR5660033_2.fastq"
 os.system(quantification_one_6dpi)
 os.chdir("quantification_results_one_6dpi")
 with open("abundance.tsv","r")as f:
@@ -82,7 +82,7 @@ with open("PipelineProject.log", "a+") as f:
     f.write("Donor 1\t" + "6dpi\t" + str(minimum) + "\t" + str(median) + "\t" + str(mean) + "\t" + str(maximum) + "\n")
 
 #Third Quantification
-quantification_three_2dpi = "kallisto quant -i index.idx -o quantification_results_three_2dpi -b 10 -t 2 SRR5660044_1.fastq SRR5660044_2.fastq"
+quantification_three_2dpi = "kallisto quant -i index.idx -o quantification_results_three_2dpi -b 10 -t 2 *SRR5660044_1.fastq *SRR5660044_2.fastq"
 os.system(quantification_three_2dpi)
 os.chdir("quantification_results_three_2dpi")
 with open("abundance.tsv","r")as f:
@@ -100,7 +100,7 @@ with open("PipelineProject.log", "a+") as f:
     f.write("Donor 3\t" + "2dpi\t" + str(minimum) + "\t" + str(median) + "\t" + str(mean) + "\t" + str(maximum) + "\n")
 
 #Fourth Quantification
-quantification_three_6dpi = "kallisto quant -i index.idx -o quantification_results_three_6dpi -b 10 -t 2 SRR5660045_1.fastq SRR5660045_2.fastq"
+quantification_three_6dpi = "kallisto quant -i index.idx -o quantification_results_three_6dpi -b 10 -t 2 *SRR5660045_1.fastq *SRR5660045_2.fastq"
 os.system(quantification_three_6dpi)
 os.chdir("quantification_results_three_6dpi")
 with open("abundance.tsv","r")as f:
@@ -132,17 +132,67 @@ os.system('Rscript sleuth_command.R')
 #Extract data from Rscript output
 with open("significant_values.tsv", "r") as f:
 	lines = f.readlines()[1:]
-	target_id = [i.split("\t")[1] for i in lines]
-	test_stat_raw = [(i.split("\t")[2]) for i in lines]
+	target_id = [i.split("\t")[0] for i in lines]
+	test_stat_raw = [(i.split("\t")[1]) for i in lines]
 	test_stat = [float(x.strip()) for x in test_stat_raw]
-	pval_raw = [i.split("\t")[3] for i in lines]
+	pval_raw = [i.split("\t")[2] for i in lines]
 	pval = [float(x.strip()) for x in pval_raw]
-	qval_raw = [i.split("\t")[4] for i in lines]
+	qval_raw = [i.split("\t")[3] for i in lines]
 	qval = [float(x.strip()) for x in qval_raw]
 
 #Write output to log file
 with open("PipelineProject.log", "a+") as f:
     f.write("target_id\ttest_stat\tpval\tqval\n")
     for i in range(len(target_id)):
-   	 f.write(target_id[i] + "\t" + test_stat[i] + "\t" + pval[i] + "\t" + qval[i] + "\n")
+   	 f.write(str(target_id[i]) + "\t" +str(test_stat[i]) + "\t" +str(pval[i]) + "\t" +str(qval[i]) + "\n")
+    f.write("\n")
 
+#Build Index for Bowtie2
+os.system("bowtie2-build ncbi_dataset/data/GCF_000845245.1/cds_from_genomic.fna HCMV")
+
+#Running Bowtie2 on each paired read
+os.system("bowtie2 --quiet -x HCMV -1 *SRR5660030_1.fastq -2 *SRR5660030_2.fastq -s SRR5660030_aligned.sam --al-conc-gz SRR5660030_mapped_%.fq.gz")
+os.system("bowtie2 --quiet -x HCMV -1 *SRR5660033_1.fastq -2 *SRR5660033_2.fastq -s SRR5660033_aligned.sam --al-conc-gz SRR5660033_mapped_%.fq.gz")
+os.system("bowtie2 --quiet -x HCMV -1 *SRR5660044_1.fastq -2 *SRR5660044_2.fastq -s SRR5660044_aligned.sam --al-conc-gz SRR5660044_mapped_%.fq.gz")
+os.system("bowtie2 --quiet -x HCMV -1 *SRR5660045_1.fastq -2 *SRR5660045_2.fastq -s SRR5660045_aligned.sam --al-conc-gz SRR5660045_mapped_%.fq.gz")
+
+#Unzip all reads
+os.system("gunzip SRR5660030_mapped_1.fq")
+os.system("gunzip SRR5660030_mapped_2.fq")
+os.system("gunzip SRR5660033_mapped_1.fq")
+os.system("gunzip SRR5660033_mapped_2.fq")
+os.system("gunzip SRR5660044_mapped_1.fq")
+os.system("gunzip SRR5660044_mapped_2.fq")
+os.system("gunzip SRR5660045_mapped_1.fq")
+os.system("gunzip SRR5660045_mapped_2.fq")
+
+#Each set of paired reads has only one + to represent the line with ASCII scores, this means that we can count the number of "+" to determined how many paired reads there are
+#Find the output of a grep command for raw reads and mapped reads and store to variables for each sample/conditions
+length_Donor1_2dpi_all_raw = subprocess.run("grep -c '+' sample_SRR5660030_1.fastq", shell=True, capture_output=True, text=True)
+length_Donor1_2dpi_aligned_raw = subprocess.run("grep -c '+' SRR5660030_mapped_1.fq", shell=True, capture_output=True, text=True)
+length_Donor1_2dpi_all = length_Donor1_2dpi_all_raw.stdout.strip()
+length_Donor1_2dpi_aligned = length_Donor1_2dpi_aligned_raw.stdout.strip()
+
+length_Donor1_6dpi_all_raw = subprocess.run("grep -c '+' sample_SRR5660033_1.fastq", shell=True, capture_output=True, text=True)
+length_Donor1_6dpi_aligned_raw = subprocess.run("grep -c '+' SRR5660033_mapped_1.fq", shell=True, capture_output=True, text=True)
+length_Donor1_6dpi_all = length_Donor1_6dpi_all_raw.stdout.strip()
+length_Donor1_6dpi_aligned = length_Donor1_6dpi_aligned_raw.stdout.strip()
+
+length_Donor3_2dpi_all_raw = subprocess.run("grep -c '+' sample_SRR5660044_1.fastq", shell=True, capture_output=True, text=True)
+length_Donor3_2dpi_aligned_raw = subprocess.run("grep -c '+' SRR5660044_mapped_1.fq", shell=True, capture_output=True, text=True)
+length_Donor3_2dpi_all = length_Donor3_2dpi_all_raw.stdout.strip()
+length_Donor3_2dpi_aligned = length_Donor3_2dpi_aligned_raw.stdout.strip()
+
+length_Donor3_6dpi_all_raw = subprocess.run("grep -c '+' sample_SRR5660045_1.fastq", shell=True, capture_output=True, text=True)
+length_Donor3_6dpi_aligned_raw = subprocess.run("grep -c '+' SRR5660045_mapped_1.fq", shell=True, capture_output=True, text=True)
+length_Donor3_6dpi_all = length_Donor3_6dpi_all_raw.stdout.strip()
+length_Donor3_6dpi_aligned = length_Donor3_6dpi_aligned_raw.stdout.strip()
+
+#Output found values to PipelineProject.log
+with open("PipelineProject.log","a+") as f:
+	f.write("\n")
+	f.write("Donor 1 (2dpi) had " + str(length_Donor1_2dpi_all) + " read pairs before Bowtie2 filtering and " + str(length_Donor1_2dpi_aligned) + " read pairs after.\n")
+	f.write("Donor 1 (6dpi) had " + str(length_Donor1_6dpi_all) + " read pairs before Bowtie2 filtering and " + str(length_Donor1_6dpi_aligned) + " read pairs after.\n")
+	f.write("Donor 3 (2dpi) had " + str(length_Donor3_2dpi_all) + " read pairs before Bowtie2 filtering and " + str(length_Donor3_2dpi_aligned) + " read pairs after.\n")
+	f.write("Donor 3 (6dpi) had " + str(length_Donor3_6dpi_all) + " read pairs before Bowtie2 filtering and " + str(length_Donor3_6dpi_aligned) + " read pairs after.\n")
+	f.write("\n")
