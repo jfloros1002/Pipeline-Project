@@ -245,19 +245,19 @@ with open("contigs.fasta","r+") as f:
 
 os.chdir("..")
 
-with open("donor1_blast_sequence.fasta","r+") as f:
+with open("donor1_blast_sequence.fasta","w+") as f:
 	f.write(final_strand_donor_1)
-with open("donor3_blast_sequence.fasta","r+") as f:
+with open("donor3_blast_sequence.fasta","w+") as f:
 	f.write(final_strand_donor_3)
 #os.system("datasets download virus genome taxon betaherpesvirinae --refseq --include genome")
-os.system("makeblastdb -in cds_from_genomic.fna -out Betaherpesvirinae -title Betaherpesvirinae -dbtype nucl")
+os.system("makeblastdb -in cds_from_genomic.fna -out betaherpesvirinae -title betaherpesvirinae -dbtype nucl")
 
 query_seqfile_donor1 = "donor1_blast_sequence.fasta"
 output_file_donor1 = "donor1_blast.csv"
 query_seqfile_donor3 = "donor3_blast_sequence.fasta"
 output_file_donor3 = "donor3_blast.csv"
-blast_command_donor1 = "blastn -query " + query_seqfile_donor1+ " -db betaherpesvirinae -out " + output_file_donor1 + " -outfmt 10"
-blast_command_donor3 = "blastn -query " + query_seqfile_donor3+ " -db betaherpesvirinae -out " + output_file_donor3 + " -outfmt 10"
+blast_command_donor1 = "blastn -query " + query_seqfile_donor1+ " -db betaherpesvirinae -out " + output_file_donor1 + " -outfmt 7"
+blast_command_donor3 = "blastn -query " + query_seqfile_donor3+ " -db betaherpesvirinae -out " + output_file_donor3 + " -outfmt 7"
 
-os.system("blast_command_donor1")
-os.system("blast_command_donor3")
+os.system(blast_command_donor1)
+os.system(blast_command_donor3)
