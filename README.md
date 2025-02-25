@@ -54,3 +54,9 @@ fasterq-dump SRR5660045
 These paired end flies are then used for the analysis using the wrapper_script.py command
 
 NOTE: It is important that the files names contain the SRR56600XX.fastq file name, as this is used in the pipeline. Samples files will contain the same title.
+
+# Running the Pipeline
+
+To run the pipeline: Eight sample sequences must be present in the same directory as the wrapper script. These can be either the sample files present in the github repository, or the original files downloaded as described above using wget and fasterq_dump. Additionally the sleuth_command.R file must also be downloaded, as this is used in the wrapper script.
+
+Once the eight files, the sleuth_command.R, and wrapper_script.py are downloaded, analysis can be completed by writing python wrapper_script.py to the command line. A directory named PipelineProject_John_Floros will be created, and all output will be placed in this folder.
