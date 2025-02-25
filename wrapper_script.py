@@ -115,8 +115,8 @@ mean = sum_results/length_results
 maximum = max(results)
 os.chdir("..")
 with open("PipelineProject.log", "a+") as f:
-	 f.write("Donor 3\t" + "6dpi\t" + str(minimum) + "\t" + str(median) + "\t" + str(mean) + "\t" + str(maximum) + "\n")
-
+	f.write("Donor 3\t" + "6dpi\t" + str(minimum) + "\t" + str(median) + "\t" + str(mean) + "\t" + str(maximum) + "\n")
+	f.write("\n")
 
 #Creating tsv file for reading for sleuth input
 with open("sleuth_input.tsv","a+") as f:
@@ -190,9 +190,22 @@ length_Donor3_6dpi_aligned = length_Donor3_6dpi_aligned_raw.stdout.strip()
 
 #Output found values to PipelineProject.log
 with open("PipelineProject.log","a+") as f:
-	f.write("\n")
 	f.write("Donor 1 (2dpi) had " + str(length_Donor1_2dpi_all) + " read pairs before Bowtie2 filtering and " + str(length_Donor1_2dpi_aligned) + " read pairs after.\n")
 	f.write("Donor 1 (6dpi) had " + str(length_Donor1_6dpi_all) + " read pairs before Bowtie2 filtering and " + str(length_Donor1_6dpi_aligned) + " read pairs after.\n")
 	f.write("Donor 3 (2dpi) had " + str(length_Donor3_2dpi_all) + " read pairs before Bowtie2 filtering and " + str(length_Donor3_2dpi_aligned) + " read pairs after.\n")
 	f.write("Donor 3 (6dpi) had " + str(length_Donor3_6dpi_all) + " read pairs before Bowtie2 filtering and " + str(length_Donor3_6dpi_aligned) + " read pairs after.\n")
+	f.write("\n")
+
+#Commands for running spades with each set of Donor reads. A k size of 77 was requested, so this is what k is set to
+Donor1_spades_command = "spades.py -k 77 -t 2 --only-assembler --pe-1 1 SRR5660030_mapped_1.fq --pe-2 1 SRR5660030_mapped_2.fq --pe-1 2 SRR5660033_mapped_1.fq --pe-2 2 SRR5660033_mapped_2.fq -o Donor1_assembly/"
+Donor3_spades_command = "spades.py -k 77 -t 2 --only-assembler --pe-1 1 SRR5660044_mapped_1.fq --pe-2 1 SRR5660044_mapped_2.fq --pe-1 2 SRR5660045_mapped_1.fq --pe-2 2 SRR5660045_mapped_2.fq -o Donor3_assmebly/"
+
+#Running spades commands
+os.system(Donor1_spades_command)
+os.system(Donor3_spades_command)
+
+#Writing commands to PipelineProject.log
+with open("PipelineProject.log","a+") as f:
+	f.write("SPAdes command for Donor 1: " + str(Donor1_spades_command) + "\n")
+	f.write("SPAdes command for Donor 3: " + str(Donor3_spades_command) + "\n")
 	f.write("\n")
