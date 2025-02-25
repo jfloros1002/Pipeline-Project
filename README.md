@@ -3,6 +3,14 @@ Repository for COMP483 Pipeline Project
 
 # Required Dependences:
 os
+suprocess
+NCBI Datasets (NCBI Command Line Tools)
+kallisto
+sleuth
+dplyr
+bowtie2
+SPAdes
+BLAST+
 
 # Aquisition of Data
 Data was aquired from individuals two and six days post infection (dpi) with Human Cytomegalovirus (HCMV). Raw files were found using SRA acession numbers and downloaded using wget with the following links:
@@ -37,4 +45,4 @@ fasterq-dump SRR5660045
 
 These paired end flies are then used for the analysis using the wrapper_script.py command
 
-NOTE: It is important that the files names contain the SRR56600__.fastq file name, as this is used in the pipeline. Samples files will contain the same title suffix.
+NOTE: It is important that the files names contain the SRR56600XX.fastq file name, as this is used in the pipeline. Samples files will contain the same title.
