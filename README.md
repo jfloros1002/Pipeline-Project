@@ -3,13 +3,21 @@ Repository for COMP483 Pipeline Project
 
 # Required Dependences:
 os
+
 suprocess
+
 NCBI Datasets (NCBI Command Line Tools)
+
 kallisto
+
 sleuth
+
 dplyr
+
 bowtie2
+
 SPAdes
+
 BLAST+
 
 # Aquisition of Data
