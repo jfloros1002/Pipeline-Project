@@ -168,22 +168,22 @@ os.system("gunzip SRR5660045_mapped_2.fq")
 
 #Each set of paired reads has only one + to represent the line with ASCII scores, this means that we can count the number of "+" to determined how many paired reads there are
 #Find the output of a grep command for raw reads and mapped reads and store to variables for each sample/conditions
-length_Donor1_2dpi_all_raw = subprocess.run("grep -c '+' sample_SRR5660030_1.fastq", shell=True, capture_output=True, text=True)
+length_Donor1_2dpi_all_raw = subprocess.run("grep -c '+' SRR5660030_1.fastq", shell=True, capture_output=True, text=True)
 length_Donor1_2dpi_aligned_raw = subprocess.run("grep -c '+' SRR5660030_mapped_1.fq", shell=True, capture_output=True, text=True)
 length_Donor1_2dpi_all = length_Donor1_2dpi_all_raw.stdout.strip()
 length_Donor1_2dpi_aligned = length_Donor1_2dpi_aligned_raw.stdout.strip()
 
-length_Donor1_6dpi_all_raw = subprocess.run("grep -c '+' sample_SRR5660033_1.fastq", shell=True, capture_output=True, text=True)
+length_Donor1_6dpi_all_raw = subprocess.run("grep -c '+' SRR5660033_1.fastq", shell=True, capture_output=True, text=True)
 length_Donor1_6dpi_aligned_raw = subprocess.run("grep -c '+' SRR5660033_mapped_1.fq", shell=True, capture_output=True, text=True)
 length_Donor1_6dpi_all = length_Donor1_6dpi_all_raw.stdout.strip()
 length_Donor1_6dpi_aligned = length_Donor1_6dpi_aligned_raw.stdout.strip()
 
-length_Donor3_2dpi_all_raw = subprocess.run("grep -c '+' sample_SRR5660044_1.fastq", shell=True, capture_output=True, text=True)
+length_Donor3_2dpi_all_raw = subprocess.run("grep -c '+' SRR5660044_1.fastq", shell=True, capture_output=True, text=True)
 length_Donor3_2dpi_aligned_raw = subprocess.run("grep -c '+' SRR5660044_mapped_1.fq", shell=True, capture_output=True, text=True)
 length_Donor3_2dpi_all = length_Donor3_2dpi_all_raw.stdout.strip()
 length_Donor3_2dpi_aligned = length_Donor3_2dpi_aligned_raw.stdout.strip()
 
-length_Donor3_6dpi_all_raw = subprocess.run("grep -c '+' sample_SRR5660045_1.fastq", shell=True, capture_output=True, text=True)
+length_Donor3_6dpi_all_raw = subprocess.run("grep -c '+' SRR5660045_1.fastq", shell=True, capture_output=True, text=True)
 length_Donor3_6dpi_aligned_raw = subprocess.run("grep -c '+' SRR5660045_mapped_1.fq", shell=True, capture_output=True, text=True)
 length_Donor3_6dpi_all = length_Donor3_6dpi_all_raw.stdout.strip()
 length_Donor3_6dpi_aligned = length_Donor3_6dpi_aligned_raw.stdout.strip()
