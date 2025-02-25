@@ -198,7 +198,7 @@ with open("PipelineProject.log","a+") as f:
 
 #Commands for running spades with each set of Donor reads. A k size of 77 was requested, so this is what k is set to
 Donor1_spades_command = "spades.py -k 77 -t 2 --only-assembler --pe-1 1 SRR5660030_mapped_1.fq --pe-2 1 SRR5660030_mapped_2.fq --pe-1 2 SRR5660033_mapped_1.fq --pe-2 2 SRR5660033_mapped_2.fq -o Donor1_assembly/"
-Donor3_spades_command = "spades.py -k 77 -t 2 --only-assembler --pe-1 1 SRR5660044_mapped_1.fq --pe-2 1 SRR5660044_mapped_2.fq --pe-1 2 SRR5660045_mapped_1.fq --pe-2 2 SRR5660045_mapped_2.fq -o Donor3_assmebly/"
+Donor3_spades_command = "spades.py -k 77 -t 2 --only-assembler --pe-1 1 SRR5660044_mapped_1.fq --pe-2 1 SRR5660044_mapped_2.fq --pe-1 2 SRR5660045_mapped_1.fq --pe-2 2 SRR5660045_mapped_2.fq -o Donor3_assembly/"
 
 #Running spades commands
 os.system(Donor1_spades_command)
@@ -210,19 +210,54 @@ with open("PipelineProject.log","a+") as f:
 	f.write("SPAdes command for Donor 3: " + str(Donor3_spades_command) + "\n")
 	f.write("\n")
 
-os.chdir("Donor1_assembly")
-with open("scaffolds.fasta","r+") as f:
+os.chdir("Donor1_assembly/")
+with open("contigs.fasta","r+") as f:
 	lines = f.readlines()
+	first_line = lines[0].strip("\n")
 	total_strand = ""
+	final_strand_donor_1 = ""
 	current_strand = ""
-	while ">" not in current_strand:
-		for i in range(1,len(lines)+1):
-			if ">" in current_strand:
-				break
-			else:
-				current_strand = lines[i]
-				current_strand = current_strand.strip("\n")
-				print(current_strand)
-				total_strand += str(current_strand)
+	final_strand = first_line
+	for i in range(1,len(lines)+1):
+		current_strand = lines[i].strip("\n")
+		if ">" in current_strand:
+			final_strand_donor_1 = total_strand
+			break
+		else:
+			total_strand += str(current_strand)
 
-print(total_strand)
+os.chdir("..")
+os.chdir("Donor3_assembly/")
+
+with open("contigs.fasta","r+") as f:
+        lines = f.readlines()
+        total_strand = ""
+        final_strand_donor_3 = ""
+        current_strand = ""
+        for i in range(1,len(lines)+1):
+                current_strand = lines[i].strip("\n")
+                if ">" in current_strand:
+                        final_strand_donor_3 = total_strand
+                        break
+                else:
+                        total_strand += str(current_strand)
+
+
+os.chdir("..")
+
+with open("donor1_blast_sequence.fasta","r+") as f:
+	f.write(final_strand_donor_1)
+with open("donor3_blast_sequence.fasta","r+") as f:
+	f.write(final_strand_donor_3)
+#os.system("datasets download virus genome taxon betaherpesvirinae --refseq --include genome")
+os.system("makeblastdb -in cds_from_genomic.fna -out Betaherpesvirinae -title Betaherpesvirinae -dbtype nucl")
+
+query_seqfile_donor1 = "donor1_blast_sequence.fasta"
+output_file_donor1 = "donor1_blast.csv"
+query_seqfile_donor3 = "donor3_blast_sequence.fasta"
+output_file_donor3 = "donor3_blast.csv"
+blast_command_donor1 = "blastn -query " + query_seqfile_donor1+ " -db betaherpesvirinae -out " + output_file_donor1 + " -outfmt 10"
+blast_command_donor3 = "blastn -query " + query_seqfile_donor3+ " -db betaherpesvirinae -out " + output_file_donor3 + " -outfmt 10"
+
+os.system("blast_command_donor1")
+os.system("blast_command_donor3")
