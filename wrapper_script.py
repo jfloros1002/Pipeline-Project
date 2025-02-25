@@ -209,3 +209,20 @@ with open("PipelineProject.log","a+") as f:
 	f.write("SPAdes command for Donor 1: " + str(Donor1_spades_command) + "\n")
 	f.write("SPAdes command for Donor 3: " + str(Donor3_spades_command) + "\n")
 	f.write("\n")
+
+os.chdir("Donor1_assembly")
+with open("scaffolds.fasta","r+") as f:
+	lines = f.readlines()
+	total_strand = ""
+	current_strand = ""
+	while ">" not in current_strand:
+		for i in range(1,len(lines)+1):
+			if ">" in current_strand:
+				break
+			else:
+				current_strand = lines[i]
+				current_strand = current_strand.strip("\n")
+				print(current_strand)
+				total_strand += str(current_strand)
+
+print(total_strand)
