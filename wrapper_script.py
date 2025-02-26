@@ -256,8 +256,25 @@ query_seqfile_donor1 = "donor1_blast_sequence.fasta"
 output_file_donor1 = "donor1_blast.csv"
 query_seqfile_donor3 = "donor3_blast_sequence.fasta"
 output_file_donor3 = "donor3_blast.csv"
-blast_command_donor1 = "blastn -query " + query_seqfile_donor1+ " -db betaherpesvirinae -out " + output_file_donor1 + " -outfmt 7"
-blast_command_donor3 = "blastn -query " + query_seqfile_donor3+ " -db betaherpesvirinae -out " + output_file_donor3 + " -outfmt 7"
+blast_command_donor1 = "blastn -query " + query_seqfile_donor1+ " -db betaherpesvirinae -out " + output_file_donor1 + " -outfmt 10"
+blast_command_donor3 = "blastn -query " + query_seqfile_donor3+ " -db betaherpesvirinae -out " + output_file_donor3 + " -outfmt 10"
 
 os.system(blast_command_donor1)
 os.system(blast_command_donor3)
+
+with open("donor1_blast.csv","r+") as f:
+	for line in f:
+		row = line.strip().split(",")
+		print(row)
+
+with open("PipelineProject_John_Floros","a+") as f:
+	f.write("Donor1:\n")
+	f.write("sacc\tpidenttlength\tqstart\tqend\tsstart\tsend\tbitscore\tevalue\tstitle\n")
+	#f.write(SOMETHING)
+	f.write("\n")
+
+with open("PipelineProject_John_Floros","a+") as f:
+        f.write("Donor3:\n")
+        f.write("sacc\tpidenttlength\tqstart\tqend\tsstart\tsend\tbitscore\tevalue\tstitle\n")
+        #f.write(SOMETHING)
+        f.write("\n")
