@@ -210,7 +210,9 @@ with open("PipelineProject.log","a+") as f:
 	f.write("SPAdes command for Donor 3: " + str(Donor3_spades_command) + "\n")
 	f.write("\n")
 
+#Write the longest contig to a file for BLAST input for Donor1 and Donor 3
 os.chdir("Donor1_assembly/")
+#The first contig is always the longest, use this for writing
 with open("contigs.fasta","r+") as f:
 	lines = f.readlines()
 	first_line = lines[0].strip("\n")
@@ -229,6 +231,7 @@ with open("contigs.fasta","r+") as f:
 os.chdir("..")
 os.chdir("Donor3_assembly/")
 
+#Repeat over procedure with Donor3 contigs
 with open("contigs.fasta","r+") as f:
         lines = f.readlines()
         total_strand = ""
@@ -245,13 +248,16 @@ with open("contigs.fasta","r+") as f:
 
 os.chdir("..")
 
+#Create two fasta sequences for BLAST input
 with open("donor1_blast_sequence.fasta","w+") as f:
 	f.write(final_strand_donor_1)
 with open("donor3_blast_sequence.fasta","w+") as f:
 	f.write(final_strand_donor_3)
-#os.system("datasets download virus genome taxon betaherpesvirinae --refseq --include genome")
+
+#Create blast db from betaherpesvirinae fna that was found earlier
 os.system("makeblastdb -in cds_from_genomic.fna -out betaherpesvirinae -title betaherpesvirinae -dbtype nucl")
 
+#Create commands for command line blast
 query_seqfile_donor1 = "donor1_blast_sequence.fasta"
 output_file_donor1 = "donor1_blast.csv"
 query_seqfile_donor3 = "donor3_blast_sequence.fasta"
@@ -263,18 +269,94 @@ os.system(blast_command_donor1)
 os.system(blast_command_donor3)
 
 with open("donor1_blast.csv","r+") as f:
+	sacc = []
+	pident = []
+	length =[]
+	qstart = []
+	qend = []
+	sstart = []
+	send = []
+	bitscore = []
+	evalue = []
+	stitle = []
+	lines = f.readlines()
 	for line in f:
 		row = line.strip().split(",")
-		print(row)
-
+	if len(lines) < 10:
+		for i in range(0,len(lines)):
+			sacc.append(row[1])
+			pident.append(row[2])
+			length.append(row[3])
+			qstart.append(row[6])
+			qend.append(row[7])
+			sstart.append(row[8])
+			send.append(row[9])
+			bitscore.append(row[11])
+			evalue.append(row[10])
+			stitle.append(row[0])
+	else:
+		for i in range(0,10):
+			sacc.append(row[1])
+			pident.append(row[2])
+			length.append(row[3])
+			qstart.append(row[6])
+			qend.append(row[7])
+			sstart.append(row[8])
+			send.append(row[9])
+			bitscore.append(row[11])
+			evalue.append(row[10])
+			stitle.append(row[0])
+print(row)
 with open("PipelineProject_John_Floros","a+") as f:
 	f.write("Donor1:\n")
 	f.write("sacc\tpidenttlength\tqstart\tqend\tsstart\tsend\tbitscore\tevalue\tstitle\n")
-	#f.write(SOMETHING)
+	for i in range(0,len(sacc)):
+		f.write(str(sacc[i])+"\t"+str(pident[i])+"\t"+str(length[i])+"\t"+str(qstart[i])+"\t"+str(qend[i])+"\t"+str(sstart[i])+"\t"+str(send[i])+"\t"+str(bitscore[i])+"\t"+str(evalue[i])+"\t"+str(stitile[i])+"\n")
 	f.write("\n")
 
+with open("donor3_blast.csv","r+") as f:
+	sacc = []
+	pident = []
+	length =[]
+	qstart = []
+	qend = []
+	sstart = []
+	send = []
+	bitscore = []
+	evalue = []
+	stitle = []
+	lines = f.readlines()
+	for line in f:
+		row = line.strip().split(",")
+		print(row)
+	if len(row) < 10:
+		for i in range(0,len(row)):
+			sacc.append(row[1])
+			pident.append(row[2])
+			length.append(row[3])
+			qstart.append(row[6])
+			qend.append(row[7])
+			sstart.append(row[8])
+			send.append(row[9])
+			bitscore.append(row[11])
+			evalue.append(row[10])
+			stitle.append(row[0])
+	else:
+		for i in range(0,10):
+			sacc.append(row[1])
+			pident.append(row[2])
+			length.append(row[3])
+			qstart.append(row[6])
+			qend.append(row[7])
+			sstart.append(row[8])
+			send.append(row[9])
+			bitscore.append(row[11])
+			evalue.append(row[10])
+			stitle.append(row[0])
 with open("PipelineProject_John_Floros","a+") as f:
         f.write("Donor3:\n")
         f.write("sacc\tpidenttlength\tqstart\tqend\tsstart\tsend\tbitscore\tevalue\tstitle\n")
-        #f.write(SOMETHING)
+        for i in range(0,len(sacc)):
+                f.write(str(sacc[i])+"\t"+str(pident[i])+"\t"+str(length[i])+"\t"+str(qstart[i])+"\t"+str(qend[i])+"\t"+str(sstart[i])+"\t"+str(send[i])+"\t"+str(bitscore[i])+"\t"+str(evalue[i])+"\t"+str(title[i])+"\n")
         f.write("\n")
+
