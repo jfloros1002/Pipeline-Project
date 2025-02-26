@@ -268,95 +268,95 @@ blast_command_donor3 = "blastn -query " + query_seqfile_donor3+ " -db betaherpes
 os.system(blast_command_donor1)
 os.system(blast_command_donor3)
 
-with open("donor1_blast.csv","r+") as f:
-	sacc = []
-	pident = []
-	length =[]
-	qstart = []
-	qend = []
-	sstart = []
-	send = []
-	bitscore = []
-	evalue = []
-	stitle = []
-	lines = f.readlines()
-	for line in f:
-		row = line.strip().split(",")
-	if len(lines) < 10:
-		for i in range(0,len(lines)):
-			sacc.append(row[1])
-			pident.append(row[2])
-			length.append(row[3])
-			qstart.append(row[6])
-			qend.append(row[7])
-			sstart.append(row[8])
-			send.append(row[9])
-			bitscore.append(row[11])
-			evalue.append(row[10])
-			stitle.append(row[0])
-	else:
-		for i in range(0,10):
-			sacc.append(row[1])
-			pident.append(row[2])
-			length.append(row[3])
-			qstart.append(row[6])
-			qend.append(row[7])
-			sstart.append(row[8])
-			send.append(row[9])
-			bitscore.append(row[11])
-			evalue.append(row[10])
-			stitle.append(row[0])
-print(row)
-with open("PipelineProject_John_Floros","a+") as f:
-	f.write("Donor1:\n")
-	f.write("sacc\tpidenttlength\tqstart\tqend\tsstart\tsend\tbitscore\tevalue\tstitle\n")
-	for i in range(0,len(sacc)):
-		f.write(str(sacc[i])+"\t"+str(pident[i])+"\t"+str(length[i])+"\t"+str(qstart[i])+"\t"+str(qend[i])+"\t"+str(sstart[i])+"\t"+str(send[i])+"\t"+str(bitscore[i])+"\t"+str(evalue[i])+"\t"+str(stitile[i])+"\n")
-	f.write("\n")
+#with open("donor1_blast.csv","r+") as f:
+#	sacc = []
+#	pident = []
+#	length =[]
+#	qstart = []
+#	qend = []
+#	sstart = []
+#	send = []
+#	bitscore = []
+#	evalue = []
+#	stitle = []
+#	lines = f.readlines()
+#	for line in f:
+#		row = line.strip().split(",")
+#	if len(lines) < 10:
+#		for i in range(0,len(lines)):
+#			sacc.append(row[1])
+#			pident.append(row[2])
+#			length.append(row[3])
+#			qstart.append(row[6])
+#			qend.append(row[7])
+#			sstart.append(row[8])
+#			send.append(row[9])
+#			bitscore.append(row[11])
+#			evalue.append(row[10])
+#			stitle.append(row[0])
+#	else:
+#		for i in range(0,10):
+#			sacc.append(row[1])
+#			pident.append(row[2])
+#			length.append(row[3])
+#			qstart.append(row[6])
+#			qend.append(row[7])
+#			sstart.append(row[8])
+#			send.append(row[9])
+#			bitscore.append(row[11])
+#			evalue.append(row[10])
+#			stitle.append(row[0])
+#
+#with open("PipelineProject_John_Floros","a+") as f:
+#	f.write("Donor1:\n")
+#	f.write("sacc\tpidenttlength\tqstart\tqend\tsstart\tsend\tbitscore\tevalue\tstitle\n")
+#	for i in range(0,len(sacc)):
+#		f.write(str(sacc[i])+"\t"+str(pident[i])+"\t"+str(length[i])+"\t"+str(qstart[i])+"\t"+str(qend[i])+"\t"+str(sstart[i])+"\t"+str(send[i])+"\t"+str(bitscore[i])+"\t"+str(evalue[i])+"\t"+str(stitile[i])+"\n")
+#	f.write("\n")
 
-with open("donor3_blast.csv","r+") as f:
-	sacc = []
-	pident = []
-	length =[]
-	qstart = []
-	qend = []
-	sstart = []
-	send = []
-	bitscore = []
-	evalue = []
-	stitle = []
-	lines = f.readlines()
-	for line in f:
-		row = line.strip().split(",")
-		print(row)
-	if len(row) < 10:
-		for i in range(0,len(row)):
-			sacc.append(row[1])
-			pident.append(row[2])
-			length.append(row[3])
-			qstart.append(row[6])
-			qend.append(row[7])
-			sstart.append(row[8])
-			send.append(row[9])
-			bitscore.append(row[11])
-			evalue.append(row[10])
-			stitle.append(row[0])
-	else:
-		for i in range(0,10):
-			sacc.append(row[1])
-			pident.append(row[2])
-			length.append(row[3])
-			qstart.append(row[6])
-			qend.append(row[7])
-			sstart.append(row[8])
-			send.append(row[9])
-			bitscore.append(row[11])
-			evalue.append(row[10])
-			stitle.append(row[0])
-with open("PipelineProject_John_Floros","a+") as f:
-        f.write("Donor3:\n")
-        f.write("sacc\tpidenttlength\tqstart\tqend\tsstart\tsend\tbitscore\tevalue\tstitle\n")
-        for i in range(0,len(sacc)):
-                f.write(str(sacc[i])+"\t"+str(pident[i])+"\t"+str(length[i])+"\t"+str(qstart[i])+"\t"+str(qend[i])+"\t"+str(sstart[i])+"\t"+str(send[i])+"\t"+str(bitscore[i])+"\t"+str(evalue[i])+"\t"+str(title[i])+"\n")
-        f.write("\n")
+#with open("donor3_blast.csv","r+") as f:
+#	sacc = []
+#	pident = []
+#	length =[]
+#	qstart = []
+#	qend = []
+#	sstart = []
+#	send = []
+#	bitscore = []
+#	evalue = []
+#	stitle = []
+#	lines = f.readlines()
+#	for line in f:
+#		row = line.strip().split(",")
+#		print(row)
+#	if len(row) < 10:
+#		for i in range(0,len(row)):
+#			sacc.append(row[1])
+#			pident.append(row[2])
+#			length.append(row[3])
+#			qstart.append(row[6])
+#			qend.append(row[7])
+#			sstart.append(row[8])
+#			send.append(row[9])
+#			bitscore.append(row[11])
+#			evalue.append(row[10])
+#			stitle.append(row[0])
+#	else:
+#		for i in range(0,10):
+#			sacc.append(row[1])
+#			pident.append(row[2])
+#			length.append(row[3])
+#			qstart.append(row[6])
+#			qend.append(row[7])
+#			sstart.append(row[8])
+#			send.append(row[9])
+#			bitscore.append(row[11])
+#			evalue.append(row[10])
+#			stitle.append(row[0])
+#with open("PipelineProject_John_Floros","a+") as f:
+#        f.write("Donor3:\n")
+#        f.write("sacc\tpidenttlength\tqstart\tqend\tsstart\tsend\tbitscore\tevalue\tstitle\n")
+#        for i in range(0,len(sacc)):
+#                f.write(str(sacc[i])+"\t"+str(pident[i])+"\t"+str(length[i])+"\t"+str(qstart[i])+"\t"+str(qend[i])+"\t"+str(sstart[i])+"\t"+str(send[i])+"\t"+str(bitscore[i])+"\t"+str(evalue[i])+"\t"+str(title[i])+"\n")
+#        f.write("\n")
 
