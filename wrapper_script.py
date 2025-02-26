@@ -268,6 +268,7 @@ blast_command_donor3 = "blastn -query " + query_seqfile_donor3+ " -db betaherpes
 os.system(blast_command_donor1)
 os.system(blast_command_donor3)
 
+#Create lists to store variables for blast output
 sacc = []
 pident = []
 length =[]
@@ -278,6 +279,7 @@ send = []
 bitscore = []
 evalue = []
 stitle = []
+#Read Blast Output, store variables in the appropriate list
 with open("donor1_blast.csv","r+") as f:
 	current_line = 0
 	for line in f:
@@ -296,6 +298,7 @@ with open("donor1_blast.csv","r+") as f:
 		evalue.append(row[10])
 		stitle.append(row[0])
 
+#Write all variables to Pipeline log for part 7
 with open("PipelineProject.log","a+") as f:
 	f.write("Donor1:\n")
 	f.write("sacc\tpidenttlength\tqstart\tqend\tsstart\tsend\tbitscore\tevalue\tstitle\n")
@@ -313,6 +316,7 @@ send = []
 bitscore = []
 evalue = []
 stitle = []
+#Repeat for Donor 3
 with open("donor3_blast.csv","r+") as f:
 	current_line = 0
 	for line in f:
@@ -330,6 +334,7 @@ with open("donor3_blast.csv","r+") as f:
 		bitscore.append(row[11])
 		evalue.append(row[10])
 		stitle.append(row[0])
+#Repeat for Donor 3
 with open("PipelineProject.log","a+") as f:
         f.write("Donor3:\n")
         f.write("sacc\tpidenttlength\tqstart\tqend\tsstart\tsend\tbitscore\tevalue\tstitle\n")
